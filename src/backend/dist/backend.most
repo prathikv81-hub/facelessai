@@ -1,0 +1,138 @@
+// Version: 1.0.0
+type BrandKit__587372962 =
+  {
+    aspectRatio : Text;
+    introText : Text;
+    outroText : Text;
+    visualStyle : Text;
+    voice : Text
+  };
+type CreditsAmount__925153512 = Nat;
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type ExternalBlob__246066408 = Blob;
+type GenerationMode__452526872 = {#auto; #userScript : {script : Text}};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PipelineStage__442514505 = {#assembly; #images; #script; #voiceover};
+type SavedScript__433946617 =
+  {
+    content : Text;
+    createdAt : Timestamp__301639476;
+    id : ScriptId__743675666;
+    title : Text;
+    userId : UserId__158757552
+  };
+type ScriptId__743675666 = Nat;
+type StripeConfiguration__96897619 =
+  {allowedCountries : [Text]; secretKey : Text};
+type SubscriptionStatus__287940486 = {#active; #cancelled; #expired; #none};
+type SubscriptionTier__1002661542 = {#enterprise; #pro; #starter};
+type Subscription__1008300802 =
+  {
+    createdAt : Timestamp__301639476;
+    currentPeriodEnd : Timestamp__301639476;
+    status : SubscriptionStatus__287940486;
+    stripeCustomerId : Text;
+    stripeSubscriptionId : Text;
+    tier : SubscriptionTier__1002661542
+  };
+type Timestamp__301639476 = Int;
+type UserId__158757552 = Principal;
+type UserProfile__277265826 =
+  {
+    var brandKit : ?BrandKit__587372962;
+    createdAt : Timestamp__301639476;
+    var creditBalance : CreditsAmount__925153512;
+    var displayName : Text;
+    var email : Text;
+    id : UserId__158757552;
+    var stripeCustomerId : ?Text;
+    var subscription : ?Subscription__1008300802;
+    var updatedAt : Timestamp__301639476;
+    var youtubeConnection : ?YouTubeConnection__1032233122
+  };
+type UserRole__1054455867 = {#admin; #guest; #user};
+type VideoJobId__648694844 = Nat;
+type VideoJobStatus__945103500 =
+  {#completed; #failed : {reason : Text}; #pending; #processing};
+type VideoJob__1048534611 =
+  {
+    var completionRatePercent : Nat;
+    createdAt : Timestamp__301639476;
+    var creditsSpent : CreditsAmount__925153512;
+    var currentStage : ?PipelineStage__442514505;
+    var durationSeconds : ?Nat;
+    var errorMessage : ?Text;
+    id : VideoJobId__648694844;
+    var lastViewedAt : ?Timestamp__301639476;
+    mode : GenerationMode__452526872;
+    prompt : Text;
+    var script : ?Text;
+    var shareToken : ?Text;
+    var shareUrl : ?Text;
+    var status : VideoJobStatus__945103500;
+    var thumbnailUrl : ?ExternalBlob__246066408;
+    title : Text;
+    var totalWatchTimeSecs : Nat;
+    var updatedAt : Timestamp__301639476;
+    userId : UserId__158757552;
+    var videoUrl : ?ExternalBlob__246066408;
+    var viewCount : Nat;
+    var voiceoverUrl : ?ExternalBlob__246066408;
+    var youtubePublishStatus : YouTubePublishStatus__1002801730;
+    var youtubeUrl : ?Text
+  };
+type YouTubeConnection__1032233122 =
+  {
+    var accessToken : Text;
+    var channelId : Text;
+    var channelName : Text;
+    var connectedAt : Int;
+    var refreshToken : Text
+  };
+type YouTubePublishStatus__1002801730 =
+  {#failed; #notPublished; #published; #publishing};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1054455867>
+    };
+  stable nextJobId : {var value : VideoJobId__648694844};
+  stable nextScriptId : {var value : ScriptId__743675666};
+  stable openAiKey : {var value : Text};
+  stable replicateKey : {var value : Text};
+  stable savedScripts :
+    {
+      var root : Node__46230540<ScriptId__743675666, SavedScript__433946617>;
+      var size : Nat__490723111
+    };
+  stable shareTokenIndex :
+    {
+      var root : Node__46230540<Text, VideoJobId__648694844>;
+      var size : Nat__490723111
+    };
+  stable stripeConfig : {var value : ?StripeConfiguration__96897619};
+  stable userProfiles :
+    {
+      var root : Node__46230540<UserId__158757552, UserProfile__277265826>;
+      var size : Nat__490723111
+    };
+  stable videoJobs :
+    {
+      var root : Node__46230540<VideoJobId__648694844, VideoJob__1048534611>;
+      var size : Nat__490723111
+    };
+  stable youtubeClientId : {var value : Text};
+  stable youtubeClientSecret : {var value : Text}
+};

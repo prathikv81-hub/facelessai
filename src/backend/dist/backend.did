@@ -1,0 +1,296 @@
+type http_request_result = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type http_header = 
+ record {
+   name: text;
+   value: text;
+ };
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type YouTubeVisibility = 
+ variant {
+   private;
+   public;
+   unlisted;
+ };
+type YouTubePublishStatus = 
+ variant {
+   failed;
+   notPublished;
+   published;
+   publishing;
+ };
+type YouTubeConnectionStatus = 
+ record {
+   channelId: opt text;
+   channelName: opt text;
+   connected: bool;
+ };
+type YouTubeConnectionPublic = 
+ record {
+   accessToken: text;
+   channelId: text;
+   channelName: text;
+   connectedAt: int;
+   refreshToken: text;
+ };
+type VideoPublicView = 
+ record {
+   createdAt: Timestamp;
+   description: text;
+   thumbnailUrl: opt text;
+   title: text;
+   videoJobId: VideoJobId;
+   videoUrl: opt text;
+   viewCount: nat;
+ };
+type VideoJobStatus = 
+ variant {
+   completed;
+   failed: record {reason: text;};
+   pending;
+   processing;
+ };
+type VideoJobPublic = 
+ record {
+   completionRatePercent: nat;
+   createdAt: Timestamp;
+   creditsSpent: CreditsAmount;
+   currentStage: opt PipelineStage;
+   durationSeconds: opt nat;
+   errorMessage: opt text;
+   id: VideoJobId;
+   lastViewedAt: opt Timestamp;
+   mode: GenerationMode;
+   prompt: text;
+   script: opt text;
+   shareToken: opt text;
+   shareUrl: opt text;
+   status: VideoJobStatus;
+   thumbnailUrl: opt ExternalBlob;
+   title: text;
+   totalWatchTimeSecs: nat;
+   updatedAt: Timestamp;
+   userId: UserId;
+   videoUrl: opt ExternalBlob;
+   viewCount: nat;
+   voiceoverUrl: opt ExternalBlob;
+   youtubePublishStatus: YouTubePublishStatus;
+   youtubeUrl: opt text;
+ };
+type VideoJobId = nat;
+type VideoAnalytics = 
+ record {
+   completionRatePercent: nat;
+   lastViewedAt: opt Timestamp;
+   totalWatchTimeSecs: nat;
+   videoJobId: VideoJobId;
+   viewCount: nat;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfilePublic = 
+ record {
+   brandKit: opt BrandKit;
+   createdAt: Timestamp;
+   creditBalance: CreditsAmount;
+   displayName: text;
+   email: text;
+   id: UserId;
+   stripeCustomerId: opt text;
+   subscription: opt Subscription;
+   updatedAt: Timestamp;
+   youtubeConnection: opt YouTubeConnectionPublic;
+ };
+type UserId = principal;
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: http_request_result;
+ };
+type Timestamp = int;
+type TierConfig = 
+ record {
+   creditsPerMonth: CreditsAmount;
+   description: text;
+   name: text;
+   priceInCents: nat;
+   stripePriceId: text;
+   tier: SubscriptionTier;
+ };
+type SubscriptionTier = 
+ variant {
+   enterprise;
+   pro;
+   starter;
+ };
+type SubscriptionStatus = 
+ variant {
+   active;
+   cancelled;
+   expired;
+   none;
+ };
+type Subscription = 
+ record {
+   createdAt: Timestamp;
+   currentPeriodEnd: Timestamp;
+   status: SubscriptionStatus;
+   stripeCustomerId: text;
+   stripeSubscriptionId: text;
+   tier: SubscriptionTier;
+ };
+type StripeSessionStatus = 
+ variant {
+   completed: record {
+                response: text;
+                userPrincipal: opt text;
+              };
+   failed: record {error: text;};
+ };
+type StripeConfiguration = 
+ record {
+   allowedCountries: vec text;
+   secretKey: text;
+ };
+type ShoppingItem = 
+ record {
+   currency: text;
+   priceInCents: nat;
+   productDescription: text;
+   productName: text;
+   quantity: nat;
+ };
+type ScriptId = nat;
+type SavedScript = 
+ record {
+   content: text;
+   createdAt: Timestamp;
+   id: ScriptId;
+   title: text;
+   userId: UserId;
+ };
+type PublishToYouTubeRequest = 
+ record {
+   description: text;
+   tags: vec text;
+   title: text;
+   visibility: YouTubeVisibility;
+ };
+type PipelineStage = 
+ variant {
+   assembly;
+   images;
+   script;
+   voiceover;
+ };
+type GenerationMode = 
+ variant {
+   auto;
+   userScript: record {script: text;};
+ };
+type ExternalBlob = blob;
+type DashboardAnalytics = 
+ record {
+   avgCompletionRate: nat;
+   totalVideos: nat;
+   totalViews: nat;
+   totalWatchTimeHours: nat;
+ };
+type CreditsAmount = nat;
+type CreateVideoRequest = 
+ record {
+   mode: GenerationMode;
+   prompt: text;
+   title: text;
+ };
+type BrandKit = 
+ record {
+   aspectRatio: text;
+   introText: text;
+   outroText: text;
+   visualStyle: text;
+   voice: text;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  addCredits: (user: principal, amount: CreditsAmount) -> ();
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  cancelSubscription: () -> ();
+  connectYouTube: (authCode: text, redirectUri: text) -> ();
+  createCheckoutSession: (items: vec ShoppingItem, successUrl: text,
+   cancelUrl: text) -> (text);
+  createSubscriptionCheckout: (tier: SubscriptionTier, successUrl: text,
+   cancelUrl: text) -> (text);
+  deleteScript: (id: ScriptId) -> ();
+  deleteVideoJob: (jobId: VideoJobId) -> ();
+  disconnectYouTube: () -> ();
+  generateShareLink: (videoId: VideoJobId) -> (text);
+  getBrandKit: () -> (opt BrandKit) query;
+  getCallerProfile: () -> (opt UserProfilePublic) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getCreditBalance: () -> (CreditsAmount) query;
+  getDashboardAnalytics: () -> (DashboardAnalytics);
+  getPublicVideo: (token: text) -> (opt VideoPublicView) query;
+  getScript: (id: ScriptId) -> (opt SavedScript) query;
+  getStripeSessionStatus: (sessionId: text) -> (StripeSessionStatus);
+  getSubscriptionTiers: () -> (vec TierConfig) query;
+  getUserProfile: (user: principal) -> (opt UserProfilePublic) query;
+  getVideoAnalytics: (videoId: VideoJobId) -> (opt VideoAnalytics);
+  getVideoJob: (jobId: VideoJobId) -> (opt VideoJobPublic) query;
+  getYouTubeConnection: () -> (YouTubeConnectionStatus);
+  handleStripeWebhook: (payload: text) -> ();
+  isCallerAdmin: () -> (bool) query;
+  isStripeConfigured: () -> (bool) query;
+  listScripts: () -> (vec SavedScript) query;
+  listUserVideoJobs: () -> (vec VideoJobPublic) query;
+  publishToYouTube: (videoId: VideoJobId, request:
+   PublishToYouTubeRequest) -> ();
+  recordVideoEngagement: (videoId: VideoJobId, watchTimeSecs: nat,
+   completionPercent: nat) -> ();
+  saveBrandKit: (kit: BrandKit) -> ();
+  saveCallerProfile: (displayName: text, email: text) -> ();
+  saveScript: (title: text, content: text) -> (SavedScript);
+  setOpenAiKey: (key: text) -> ();
+  setReplicateKey: (key: text) -> ();
+  setStripeConfiguration: (config: StripeConfiguration) -> ();
+  setSubscription: (user: principal, subscription: Subscription) -> ();
+  submitVideoJob: (req: CreateVideoRequest) -> (VideoJobId);
+  transform: (input: TransformationInput) -> (TransformationOutput) query;
+  updateVideoJobStatus: (jobId: VideoJobId, stage: opt PipelineStage, script:
+   opt text, completed: bool, failed: bool, failReason: opt text) -> ();
+}

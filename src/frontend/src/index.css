@@ -1,0 +1,347 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Space Grotesk";
+    --font-body: system-ui, sans-serif;
+    --font-mono: "JetBrains Mono";
+    --radius: 0.625rem;
+
+    --background: 0.98 0 0;
+    --foreground: 0.15 0 0;
+    --card: 0.995 0 0;
+    --card-foreground: 0.15 0 0;
+    --popover: 0.995 0 0;
+    --popover-foreground: 0.15 0 0;
+
+    --primary: 0.55 0.18 290;
+    --primary-foreground: 0.98 0 0;
+
+    --secondary: 0.9 0 0;
+    --secondary-foreground: 0.25 0 0;
+    --muted: 0.92 0 0;
+    --muted-foreground: 0.5 0 0;
+
+    --accent: 0.58 0.2 255;
+    --accent-foreground: 0.98 0 0;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.98 0 0;
+
+    --border: 0.88 0.01 0;
+    --input: 0.9 0 0;
+    --ring: 0.55 0.18 290;
+
+    --chart-1: 0.58 0.2 255;
+    --chart-2: 0.55 0.18 290;
+    --chart-3: 0.65 0.15 310;
+    --chart-4: 0.5 0.16 270;
+    --chart-5: 0.62 0.14 240;
+
+    --sidebar: 0.97 0 0;
+    --sidebar-foreground: 0.15 0 0;
+    --sidebar-primary: 0.55 0.18 290;
+    --sidebar-primary-foreground: 0.98 0 0;
+    --sidebar-accent: 0.9 0 0;
+    --sidebar-accent-foreground: 0.25 0 0;
+    --sidebar-border: 0.88 0.01 0;
+    --sidebar-ring: 0.55 0.18 290;
+
+    --success: 0.55 0.19 142;
+    --success-foreground: 0.98 0 0;
+  }
+
+  .dark {
+    --background: 0.08 0 0;
+    --foreground: 0.95 0 0;
+    --card: 0.13 0 0;
+    --card-foreground: 0.95 0 0;
+    --popover: 0.16 0 0;
+    --popover-foreground: 0.95 0 0;
+
+    --primary: 0.68 0.2 290;
+    --primary-foreground: 0.08 0 0;
+
+    --secondary: 0.18 0 0;
+    --secondary-foreground: 0.85 0 0;
+    --muted: 0.2 0 0;
+    --muted-foreground: 0.55 0 0;
+
+    --accent: 0.65 0.22 255;
+    --accent-foreground: 0.08 0 0;
+
+    --destructive: 0.65 0.19 22;
+    --destructive-foreground: 0.95 0 0;
+
+    --border: 0.22 0.01 0;
+    --input: 0.22 0.01 0;
+    --ring: 0.68 0.2 290;
+
+    --chart-1: 0.65 0.22 255;
+    --chart-2: 0.68 0.2 290;
+    --chart-3: 0.72 0.16 310;
+    --chart-4: 0.62 0.18 270;
+    --chart-5: 0.58 0.14 240;
+
+    --sidebar: 0.11 0 0;
+    --sidebar-foreground: 0.95 0 0;
+    --sidebar-primary: 0.68 0.2 290;
+    --sidebar-primary-foreground: 0.08 0 0;
+    --sidebar-accent: 0.18 0 0;
+    --sidebar-accent-foreground: 0.85 0 0;
+    --sidebar-border: 0.22 0.01 0;
+    --sidebar-ring: 0.68 0.2 290;
+
+    --success: 0.68 0.21 142;
+    --success-foreground: 0.08 0 0;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gozuEnL69BTqg.woff2")
+    format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8RqV-L.woff2")
+    format("woff2");
+  font-weight: 400 600;
+  font-display: swap;
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .gradient-accent {
+    background: linear-gradient(
+      135deg,
+      oklch(var(--primary)),
+      oklch(var(--accent))
+    );
+  }
+
+  .gradient-accent-hover {
+    background: linear-gradient(
+      135deg,
+      oklch(var(--primary) / 0.9),
+      oklch(var(--accent) / 0.9)
+    );
+  }
+
+  .text-gradient-accent {
+    background: linear-gradient(
+      135deg,
+      oklch(var(--primary)),
+      oklch(var(--accent))
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .shadow-elevated {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px
+      rgba(0, 0, 0, 0.15);
+  }
+
+  .shadow-card {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+      rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-glow-primary {
+    box-shadow: 0 0 30px oklch(var(--primary) / 0.3), 0 0 60px
+      oklch(var(--primary) / 0.1);
+  }
+
+  .shadow-glow-accent {
+    box-shadow: 0 0 30px oklch(var(--accent) / 0.3), 0 0 60px
+      oklch(var(--accent) / 0.1);
+  }
+
+  .border-gradient {
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    background-image: linear-gradient(oklch(var(--card)), oklch(var(--card))),
+      linear-gradient(
+        135deg,
+        oklch(var(--primary) / 0.4),
+        oklch(var(--accent) / 0.4)
+      );
+    background-origin: border-box;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.4s ease-out both;
+  }
+
+  .animate-progress-pulse {
+    animation: progress-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .animate-slide-in-left {
+    animation: slide-in-left 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    background: oklch(var(--muted));
+    color: oklch(var(--muted-foreground));
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .badge-status.success {
+    background: oklch(var(--success) / 0.15);
+    color: oklch(var(--success));
+  }
+
+  .badge-status.warning {
+    background: oklch(var(--destructive) / 0.15);
+    color: oklch(var(--destructive));
+  }
+
+  .stats-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    background: oklch(var(--card));
+    border: 1px solid oklch(var(--border));
+    border-radius: var(--radius);
+  }
+
+  .stats-card-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: oklch(var(--foreground));
+    font-family: var(--font-display);
+  }
+
+  .stats-card-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: oklch(var(--muted-foreground));
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .share-widget {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: oklch(var(--muted) / 0.3);
+    border: 1px solid oklch(var(--border));
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    word-break: break-all;
+    color: oklch(var(--muted-foreground));
+  }
+
+  .share-widget-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2rem;
+    padding: 0 0.75rem;
+    background: oklch(var(--primary));
+    color: oklch(var(--primary-foreground));
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .share-widget-copy-btn:hover {
+    opacity: 0.9;
+  }
+
+  .share-widget-copy-btn.copied {
+    background: oklch(var(--success));
+    color: oklch(var(--success-foreground));
+  }
+
+  .publish-form-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    background: oklch(var(--card));
+    border: 1px solid oklch(var(--border));
+    border-radius: var(--radius);
+    box-shadow: var(--tw-shadow-elevated);
+  }
+
+  .publish-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .publish-form-field label {
+    font-weight: 600;
+    color: oklch(var(--foreground));
+    font-size: 0.875rem;
+  }
+
+  .publish-form-field input,
+  .publish-form-field select,
+  .publish-form-field textarea {
+    padding: 0.75rem;
+    background: oklch(var(--input));
+    color: oklch(var(--foreground));
+    border: 1px solid oklch(var(--border));
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .publish-form-field textarea {
+    resize: vertical;
+    min-height: 5rem;
+  }
+
+  .publish-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: oklch(var(--success) / 0.1);
+    border: 1px solid oklch(var(--success) / 0.3);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: oklch(var(--success));
+    font-weight: 500;
+  }
+}

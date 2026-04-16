@@ -1,0 +1,23 @@
+{
+  "overview": "FacelessAI is an AI-powered faceless video generator for YouTube creators seeking anonymity or consistent branding. Users generate YouTube videos from a text prompt or custom script, with full social sharing, video analytics, and direct YouTube publishing.",
+  "features": [
+    "AI video generation from prompts or custom scripts",
+    "Credit-based subscriptions (Starter, Pro, Enterprise)",
+    "Script library to save and reuse scripts",
+    "Brand kit for consistent voice and visual style",
+    "Social sharing with public preview pages",
+    "Per-video and dashboard analytics",
+    "Direct YouTube publishing via OAuth"
+  ],
+  "category": "productivity",
+  "tags": [
+    "video",
+    "youtube",
+    "ai",
+    "content-creation",
+    "faceless",
+    "analytics",
+    "publishing"
+  ],
+  "last_updated": "2026-04-15T18:18:42.076Z"
+}
